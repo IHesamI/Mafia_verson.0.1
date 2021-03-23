@@ -1,3 +1,7 @@
+/*  THE GIT ADDRESS
+https://github.com/IHesamI/Mafia_verson.0.1
+*/
+
 import java.util.*;
 import  java.util.regex.*;
 public class the_main {
@@ -50,6 +54,7 @@ public class the_main {
 
 
     public static void main(String[] arg) {
+        int the_mafias=0,villager=0;
         String order;
         Game the_game ;
         Scanner getin = new Scanner(System.in);
@@ -96,10 +101,58 @@ public class the_main {
 
                 else  the_game.set_role(name,ROLE);
             }
-            for( i=0;i<the_game.the_players.length;i++)
-            {   if(the_game.the_players[i].is_villager)
-                System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_GREEN +the_game.the_players[i].role);
-                    else System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_RED +the_game.the_players[i].role);
+
+            for(int j=0;j<the_game.the_players.length;j++)
+            {
+                if(the_game.the_players[j].is_villager)
+                    villager++;
+                else if(!the_game.the_players[j].is_villager && !the_game.the_players[j].is_joker)
+                    the_mafias++;
+            }
+            System.out.println(ANSI_BLUE+" TO START THE GAME ENTER start_game");
+            order= getin.next();
+            while (!order.equals("start_game"))
+            {
+                System.out.println(ANSI_RED+"WRONG ORDER ,TRY AGAIN");
+                order= getin.next();
+            }
+        for( i=0;i<the_game.the_players.length;i++)
+        {   if(the_game.the_players[i].is_villager)
+            System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_GREEN +the_game.the_players[i].role);
+        else System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_RED +the_game.the_players[i].role);
+
+        }
+            while (!the_game.joker.won && the_mafias <villager)
+            {
+                System.out.println(the_DAY.name+" [" + the_DAY.number+"]");
+                i=0    ;
+                while (i<the_game.the_players.length)
+                {   int inde0fvoter=0,indexofvotee=0;
+                    String voter= getin.next();
+                    String votee= getin.next();
+                    if( the_game.has_that_name(voter)&&!the_game.Is_silenced(voter))
+                    {
+                        if(the_game.has_that_name(votee)&&the_game.Is_Votee_alive(votee))
+                        {
+                            the_game.increase_the_votee(votee);
+                            i++;
+                        }
+                        else if(!the_game.has_that_name(votee))
+                        {
+                            System.out.println(ANSI_RED+"USER NOT FOUND");
+                        }
+                        else {
+                            System.out.println(ANSI_RED+"VOTEE ALREADY DEAD");
+                        }
+                    }
+                    else if(!the_game.has_that_name(voter)) {
+                        System.out.println(ANSI_RED + "USER NOT FOUND");
+                    }
+                    else if(the_game.Is_silenced(voter)) {System.out.println(ANSI_RED+"VOTER IS SILENCED"); i++;}
+
+
+                }
+                
 
             }
 

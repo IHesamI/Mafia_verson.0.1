@@ -22,15 +22,39 @@ public class Game {
         }
     }
         return false;
-
-
     }
+
 
     public boolean has_that_name(String name){
         for(int i=0;i<the_players.length;i++){
             if(the_players[i].name.equals(name))
             {
-            return true;
+                    return true;
+            }
+        }
+        return false;
+    }
+        public void increase_the_votee(String name){
+            for(int i=0;i<the_players.length;i++){
+                if(the_players[i].name.equals(name))
+                    the_players[i].voting_numbers++;
+            }
+        }
+
+    public boolean Is_silenced(String name){
+        for(int i=0;i<the_players.length;i++){
+            if(the_players[i].name.equals(name))
+            {   if(the_players[i].is_silenced)
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean Is_Votee_alive(String name){
+        for(int i=0;i<the_players.length;i++){
+            if(the_players[i].name.equals(name))
+            {   if(the_players[i].is_alive)
+                return true;
             }
         }
         return false;

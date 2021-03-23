@@ -4,11 +4,14 @@ public  class Player {
     boolean is_alive;
     boolean is_villager;
     boolean has_specific_roled;
+    boolean is_silenced;
+    boolean is_joker;
     public Player(){}
 
     public  Player (String name){
         this.name=name;
     }
+
     public  void change_the_class(Player player){};
 }
 

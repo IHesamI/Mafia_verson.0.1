@@ -1,4 +1,4 @@
 public  abstract class the_DAY {
-    public String name="DAY";
- public int number=0;
+    public  static String name="DAY";
+ public static int number=1;
 }
