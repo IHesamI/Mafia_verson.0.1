@@ -1,4 +1,4 @@
 public abstract class the_night {
-public String name="Night";
-public  int number=0;
+public  static String name="Night";
+public static int number=0;
 }
