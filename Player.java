@@ -1,4 +1,4 @@
-public class Player {
+public  class Player {
     String name , voted, role ;
     int voting_numbers;
     boolean is_alive;
@@ -9,4 +9,7 @@ public class Player {
     public  Player (String name){
         this.name=name;
     }
+    public  void change_the_class(Player player){};
 }
+
+

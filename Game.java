@@ -2,17 +2,17 @@ public class Game {
     public static final String ANSI_RED = "\u001B[31m";
     Player [] the_players;
     String [] the_roles={"Joker", "villager", "detective", "doctor", "bulletproof", "mafia","godfather","silencer"};
-        Joker joker;
-        detective DETECTVIE;
-        doctor Doctor;
-    bulletproof  Bulletproof;
-    godfather Godfather;
-    silencer Silencer;
+        Joker joker=new Joker();
+        detective DETECTVIE=new detective();
+        doctor Doctor=new doctor();
+    bulletproof  Bulletproof=new bulletproof();
+    godfather Godfather=new godfather();
+    silencer Silencer=new silencer();
 
-    public void setThe_players(String [] players){
-        the_players =new Player[players.length];
-        for(int i=0;i<players.length;i++)
-            the_players[i]=new Player(players[i]);
+    public void setThe_players(String [] players_name){
+        the_players =new Player[players_name.length-1];
+        for(int i=0,k=1;k<players_name.length;i++,k++)
+            the_players[i]=new Player(players_name[k]);
     }
     public boolean has_the_role(String role)
     { for(int i=0;i<the_roles.length;i++){
@@ -41,34 +41,46 @@ public class Game {
             for(int i=0;i<the_players.length;i++){
                 if(the_players[i].name.equals(name))
                 {   the_players[i].role=role;
+                    the_players[i].is_alive=true;
                 //{"Joker", "villager", "detective", "doctor", "bulletproof", "mafia","godfather","silencer"};
                     //
                    if(role.equals("Joker"))
-                       joker =  (Joker) the_players[i];
+                   {
+                       joker.change_the_class(the_players[i]);
+                   }
 
-                  else if(role.equals("detective"))
-                        DETECTVIE =  (detective) the_players[i];
-
-                   else if(role.equals("doctor"))
-                       Doctor =  (doctor) the_players[i];
-
-                   else if(role.equals("bulletproof"))
-                       Bulletproof =  (bulletproof) the_players[i];
-                   else if(role.equals("godfather"))
-                       Godfather = (godfather) the_players[i];
-
-                   else if(role.equals("silencer")) Silencer = (silencer) the_players[i];
+                  else if(role.equals("detective")) {
+                       the_players[i].is_villager=true;
+                       DETECTVIE.change_the_class(the_players[i]);
+                   }
+                   else if(role.equals("doctor")) {
+                       the_players[i].is_villager=true;
+                       Doctor.change_the_class(the_players[i]);
+                   }
+                   else if(role.equals("bulletproof")) {
+                       the_players[i].is_villager=true;
+                       Bulletproof.change_the_class(the_players[i]);
+                   }
+                   else if(role.equals("godfather")) {
+                       the_players[i].is_villager=false;
+                       Godfather.change_the_class(the_players[i]);
+                   }
+                   else if(role.equals("silencer")) {
+                       Silencer.change_the_class(the_players[i]);
+                       the_players[i].is_villager=false;
+                   }
                    else if(role.equals("mafia"))
                        the_players[i].is_villager=false;
-                   else if(role.equals("villager"))
-                       the_players[i].is_villager=true ;
-                }
+                   else if(role.equals("villager")) {
+                       the_players[i].is_villager = true;
+                   }               }
             }
 
         }
         else {if(!has_that_name(name))  System.out.println(ANSI_RED+"USER NOT FOUND");
                 else  System.out.println(ANSI_RED+"ROLE NOT FOUND");
         }
+
 
     }
 

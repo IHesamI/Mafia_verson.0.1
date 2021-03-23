@@ -51,29 +51,28 @@ public class the_main {
 
     public static void main(String[] arg) {
         String order;
-        Game the_game = null;
+        Game the_game ;
         Scanner getin = new Scanner(System.in);
         System.out.println(ANSI_BLUE + "WELCOME TO MAFAI");
         System.out.println(ANSI_BLUE + "FOR MAKING A GAME ENTER create_game");
-        while (the_game == null) {
-            order = getin.next();
-            if (order.equals("create_game")) {
-                the_game = new Game();
-                while (getin.hasNext()) {
-                    String the_names=getin.nextLine();
-                    String [] names=the_names.split(" ");
-                    the_game.setThe_players(names);
-                    break;
-                     }
-                }
-            else {
-                System.out.println(ANSI_RED + "no game created");
-            }
+        order = getin.next();
+        while (!order.equals("create_game"))
+        {
+            System.out.println(ANSI_RED + "WRONG ORDER NO GAME CREATED, TRY AGAIN");
+            order=getin.next();
+
         }
+        the_game=new Game();
+
+        String the_names=getin.nextLine();
+        String [] names=the_names.split(" ");
         {
             System.out.println(ANSI_BLUE+"THE GAME SUCCESSFULLY WAS CREATED");
 
         }
+        the_game.setThe_players(names);
+        for(int i=0;i<the_game.the_players.length;i++)
+            System.out.print(the_game.the_players[i].name+" ");
 
         System.out.println(ANSI_BLUE + "FOR ASSIGN ROLES ENTER : assign_role");
         order=getin.next();
@@ -96,6 +95,12 @@ public class the_main {
                 }
 
                 else  the_game.set_role(name,ROLE);
+            }
+            for( i=0;i<the_game.the_players.length;i++)
+            {   if(the_game.the_players[i].is_villager)
+                System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_GREEN +the_game.the_players[i].role);
+                    else System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_RED +the_game.the_players[i].role);
+
             }
 
 
