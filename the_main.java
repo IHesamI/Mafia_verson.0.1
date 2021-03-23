@@ -49,21 +49,14 @@ public class the_main {
             ANSI_BRIGHT_BG_BLUE, ANSI_BRIGHT_BG_PURPLE, ANSI_BRIGHT_BG_CYAN, ANSI_BRIGHT_BG_WHITE};
 
 
-    public static void main(String[] arg) {/*
-        System.out.println("\n  Default text\n");
-        for (String fg : FOREGROUNDS) {
-            for (String bg : BACKGROUNDS)
-                System.out.print(fg + bg + "  TEST  ");
-            System.out.println(ANSI_RESET);
-        }
-        System.out.println(ANSI_RESET + "\n  Back to default.\n");
-*/
+    public static void main(String[] arg) {
+        String order;
         Game the_game = null;
         Scanner getin = new Scanner(System.in);
         System.out.println(ANSI_BLUE + "WELCOME TO MAFAI");
         System.out.println(ANSI_BLUE + "FOR MAKING A GAME ENTER create_game");
         while (the_game == null) {
-            String order = getin.next();
+            order = getin.next();
             if (order.equals("create_game")) {
                 the_game = new Game();
                 while (getin.hasNext()) {
@@ -71,12 +64,38 @@ public class the_main {
                     String [] names=the_names.split(" ");
                     the_game.setThe_players(names);
                     break;
+                     }
                 }
-            } else {
+            else {
                 System.out.println(ANSI_RED + "no game created");
-                the_game = null;
             }
         }
+        {
+            System.out.println(ANSI_BLUE+"THE GAME SUCCESSFULLY WAS CREATED");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
+
+        System.out.println(ANSI_BLUE + "FOR ASSIGN ROLES ENTER : assign_role");
+        order=getin.next();
+        while (!order.equals("assign_role"))
+        {
+            System.out.println(ANSI_RED + "WRONG ORDER , TRY AGAIN");
+            order=getin.next();
+
+        }
+
+            int i=0;
+            while (i<the_game.the_players.length)
+            {
+                String name=getin.next();
+                String ROLE=getin.next();
+                /*if()*/
+            }
+
+
+
+
     }
 
 }
