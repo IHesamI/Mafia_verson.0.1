@@ -34,7 +34,7 @@ public class Game {
         if(has_that_name(name)&&  has_the_role(role)){
             for(int i=0;i<the_players.length;i++){
                 if(the_players[i].name.equals(name))
-                {
+                {   the_players[i].role=role;
                    /*the_players[i]=*/
                 }
             }
