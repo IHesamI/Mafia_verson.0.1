@@ -72,8 +72,7 @@ public class the_main {
         }
         {
             System.out.println(ANSI_BLUE+"THE GAME SUCCESSFULLY WAS CREATED");
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+
         }
 
         System.out.println(ANSI_BLUE + "FOR ASSIGN ROLES ENTER : assign_role");
@@ -90,7 +89,13 @@ public class the_main {
             {
                 String name=getin.next();
                 String ROLE=getin.next();
-                /*if()*/
+                if(the_game.has_that_name(name)&& the_game.has_the_role(ROLE))
+                {
+                    the_game.set_role(name,ROLE);
+                    i++;
+                }
+
+                else  the_game.set_role(name,ROLE);
             }
 
 
