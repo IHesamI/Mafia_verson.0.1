@@ -76,8 +76,6 @@ public class the_main {
 
         }
         the_game.setThe_players(names);
-        for(int i=0;i<the_game.the_players.length;i++)
-            System.out.print(the_game.the_players[i].name+" ");
 
         System.out.println(ANSI_BLUE + "FOR ASSIGN ROLES ENTER : assign_role");
         order=getin.next();
@@ -122,18 +120,20 @@ public class the_main {
         else System.out.println(ANSI_BLUE+the_game.the_players[i].name+" "+ ANSI_RED +the_game.the_players[i].role);
 
         }
+                System.out.println("Villagers = "+ villager + ", mafias= "+ the_mafias);
+
             while (!the_game.joker.won && the_mafias <villager)
             {
                 System.out.println(the_DAY.name+" [" + the_DAY.number+"]");
                 i=0    ;
                 while (i<the_game.the_players.length)
-                {   int inde0fvoter=0,indexofvotee=0;
+                {
                     String voter= getin.next();
                     String votee= getin.next();
                     if( the_game.has_that_name(voter)&&!the_game.Is_silenced(voter))
                     {
                         if(the_game.has_that_name(votee)&&the_game.Is_Votee_alive(votee))
-                        {
+                        {System.out.println(ANSI_BLUE+"FOUND");
                             the_game.increase_the_votee(votee);
                             i++;
                         }
@@ -150,8 +150,24 @@ public class the_main {
                     }
                     else if(the_game.Is_silenced(voter)) {System.out.println(ANSI_RED+"VOTER IS SILENCED"); i++;}
 
+                }
+
+                if(the_game.player_should_be_deleted())
+                {
+                    the_game.the_players[the_game.find_the_max()].is_alive=false;
+                    if( the_game.the_players[the_game.find_the_max()].is_villager)
+                        villager--;
+                    else if(!the_game.the_players[the_game.find_the_max()].is_villager && !the_game.the_players[the_game.find_the_max()].is_joker)
+                        the_mafias--;
+
+                    else {
+                        the_game.joker.won=true;
+                        System.out.println(ANSI_BRIGHT_YELLOW +"JOKER WON!!");
+                        break;
+                    }
 
                 }
+
                 
 
             }

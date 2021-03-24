@@ -7,6 +7,7 @@ public class Joker  extends Player{
         super.is_villager=false;
         super.is_alive=true;
         super.is_joker=true;
+        this.won=false;
 
     }
 }

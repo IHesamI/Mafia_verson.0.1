@@ -59,6 +59,28 @@ public class Game {
         }
         return false;
     }
+    public int find_the_max(){
+        int the_most_voted_player_index=0,max=0;
+        for(int i=0;i<the_players.length;i++){
+            if(the_players[i].voting_numbers>max && the_players[i].voting_numbers!=0)
+            {
+                the_most_voted_player_index=i;
+                max=the_players[i].voting_numbers;
+            }
+        }
+        return the_most_voted_player_index;
+    }
+    public  boolean player_should_be_deleted(){
+        int the_most_voted_player_index=find_the_max();
+        for(int i=0;i<the_players.length;i++){
+            if(the_players[the_most_voted_player_index].voting_numbers == the_players[i].voting_numbers&& i!=the_most_voted_player_index)
+                {
+                    return false;
+            }
+        }
+        return true;
+
+    }
 
     public void set_role(String name,String role){
         if(has_that_name(name)&&  has_the_role(role)){
@@ -71,6 +93,7 @@ public class Game {
                    if(role.equals("Joker"))
                    {
                        joker.change_the_class(the_players[i]);
+                       the_players[i].is_joker=true;
                    }
 
                   else if(role.equals("detective")) {
