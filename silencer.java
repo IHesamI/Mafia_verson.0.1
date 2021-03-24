@@ -7,4 +7,5 @@ public class silencer extends Player{
         super.is_alive=true;
 
     }
+
 }

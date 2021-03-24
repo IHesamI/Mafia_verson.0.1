@@ -203,7 +203,10 @@ public class the_main {
                 int order_1 = getin.nextInt();
                 switch (order_1) {
                     case (1):
+                        String name_1=getin.next();
+                        String name_2= getin.next();
                         mafia_done = true;
+
                         break;
                     case (2):
                         doctor_done = true;
