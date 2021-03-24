@@ -59,6 +59,11 @@ public class Game {
         }
         return false;
     }
+    public  void reset_voting_number(){
+        for(int i=0;i<the_players.length;i++)
+            the_players[i].voting_numbers=0;
+    }
+
     public int find_the_max(){
         int the_most_voted_player_index=0,max=0;
         for(int i=0;i<the_players.length;i++){
