@@ -1,4 +1,6 @@
+import java.util.Scanner;
 public class Game {
+    Scanner getter=new Scanner(System.in);
     public static final String ANSI_RED = "\u001B[31m";
     Player[] the_players;
     Player the_doctor_choosed=new Player();
@@ -19,8 +21,8 @@ public class Game {
     }
 
     public boolean has_the_role(String role) {
-        for (int i = 0; i < the_roles.length; i++) {
-            if (the_roles[i].equals(role)) {
+        for (String the_role : the_roles) {
+            if (the_role.equals(role)) {
                 return true;
             }
         }
@@ -29,8 +31,8 @@ public class Game {
 
 
     public boolean has_that_name(String name) {
-        for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].name.equals(name)) {
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name)) {
                 return true;
             }
         }
@@ -38,16 +40,16 @@ public class Game {
     }
 
     public void increase_the_votee(String name) {
-        for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].name.equals(name))
-                the_players[i].voting_numbers++;
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name))
+                the_player.voting_numbers++;
         }
     }
 
     public boolean Is_silenced(String name) {
-        for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].name.equals(name)) {
-                if (the_players[i].is_silenced)
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name)) {
+                if (the_player.is_silenced)
                     return true;
             }
         }
@@ -55,20 +57,21 @@ public class Game {
     }
     public  void find_the_doctor_chosed( String name){
 
-        for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].name.equals(name)) {
-                the_players[i].saved_by_doctor=true;
-                the_doctor_choosed=the_players[i];
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name)) {
+                the_player.saved_by_doctor = true;
+                the_doctor_choosed = the_player;
 
             }
         }
 
     }
 
-    public boolean Is_Votee_alive(String name) {
-        for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].name.equals(name)) {
-                if (the_players[i].is_alive)
+    public boolean Is_Votee_alive(String name)
+    {
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name)) {
+                if (the_player.is_alive)
                     return true;
             }
         }
@@ -76,8 +79,7 @@ public class Game {
     }
 
     public void reset_voting_number() {
-        for (int i = 0; i < the_players.length; i++)
-            the_players[i].voting_numbers = 0;
+        for (Player the_player : the_players) the_player.voting_numbers = 0;
     }
 
     public int find_the_max() {
@@ -101,11 +103,64 @@ public class Game {
         return true;
 
     }
+    public  boolean IS_SUPECTED_BEFORE(String name)
+    {
+        for (Player the_player : the_players) {
+            if (the_player.name.equals(name)) {
+                if (the_player.is_suspect)
+                    return true;
+            }
+        }
+        return false;
 
-    public void doctor_job(String name1, String name2) {
+    }
+
+    public void detective_job()
+    { boolean is_done = false;
+        while (!is_done)
+        {   String name1=getter.next();
+            String name2=getter.next();
+            if (DETECTVIE.name.equals(name1))
+            {
+                if (DETECTVIE.is_alive)
+                {
+                    if (has_that_name(name2) && Is_Votee_alive(name2) && !IS_SUPECTED_BEFORE(name2)  )
+                    {  detective(name2);
+                        is_done=true;
+                    }
+                    else if(!has_that_name(name2)) System.out.println(ANSI_RED + "USER NOT FOUND");
+                    else  if(IS_SUPECTED_BEFORE(name2)) System.out.println(ANSI_RED + " DETECTIVE HAS ALREADY ASKED");
+                    else System.out.println(ANSI_RED + " SUSPECT IS DEAD");
+                }
+                else
+                    System.out.println(ANSI_RED + "DETECTIVE IS DEAD");
+            }
+            else System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT");
+        }
+    }
+    public void detective( String name){
+        for (Player the_player : the_players)
+            if (the_player.name.equals(name)) {
+                the_player.is_suspect = true;
+                if (the_player.is_villager || the_player.role.equals("godfather") || the_player.role.equals("Joker"))
+                    System.out.println("NO");
+                else {
+                    System.out.println("YES");
+
+                }
+
+            }
+
+
+            }
+
+
+    public void doctor_job() {
         boolean is_done = false;
         while (!is_done)
         {
+            String name1=getter.next();
+            String name2=getter.next();
             if (Doctor.name.equals(name1))
             {
                 if (Doctor.is_alive)
@@ -127,34 +182,34 @@ public class Game {
 
     public void set_role(String name, String role) {
         if (has_that_name(name) && has_the_role(role)) {
-            for (int i = 0; i < the_players.length; i++) {
-                if (the_players[i].name.equals(name)) {
-                    the_players[i].role = role;
-                    the_players[i].is_alive = true;
+            for (Player the_player : the_players) {
+                if (the_player.name.equals(name)) {
+                    the_player.role = role;
+                    the_player.is_alive = true;
                     //{"Joker", "villager", "detective", "doctor", "bulletproof", "mafia","godfather","silencer"};
                     //
                     if (role.equals("Joker")) {
-                        joker.change_the_class(the_players[i]);
-                        the_players[i].is_joker = true;
+                        joker.change_the_class(the_player);
+                        the_player.is_joker = true;
                     } else if (role.equals("detective")) {
-                        the_players[i].is_villager = true;
-                        DETECTVIE.change_the_class(the_players[i]);
+                        the_player.is_villager = true;
+                        DETECTVIE.change_the_class(the_player);
                     } else if (role.equals("doctor")) {
-                        the_players[i].is_villager = true;
-                        Doctor.change_the_class(the_players[i]);
+                        the_player.is_villager = true;
+                        Doctor.change_the_class(the_player);
                     } else if (role.equals("bulletproof")) {
-                        the_players[i].is_villager = true;
-                        Bulletproof.change_the_class(the_players[i]);
+                        the_player.is_villager = true;
+                        Bulletproof.change_the_class(the_player);
                     } else if (role.equals("godfather")) {
-                        the_players[i].is_villager = false;
-                        Godfather.change_the_class(the_players[i]);
+                        the_player.is_villager = false;
+                        Godfather.change_the_class(the_player);
                     } else if (role.equals("silencer")) {
-                        Silencer.change_the_class(the_players[i]);
-                        the_players[i].is_villager = false;
+                        Silencer.change_the_class(the_player);
+                        the_player.is_villager = false;
                     } else if (role.equals("mafia"))
-                        the_players[i].is_villager = false;
+                        the_player.is_villager = false;
                     else if (role.equals("villager")) {
-                        the_players[i].is_villager = true;
+                        the_player.is_villager = true;
                     }
                 }
             }

@@ -178,7 +178,7 @@ public class the_main {
             the_game.reset_voting_number();
             System.out.println(ANSI_BLUE + the_night.name + " [" + the_night.number + "]");
             boolean mafia_done = false, doctor_done = false, detedctive_done = false, silebcer_done = false;
-            while (!mafia_done || !doctor_done || !silebcer_done|| !detedctive_done ) {
+            while (!mafia_done || !doctor_done /*|| !silebcer_done*/|| !detedctive_done ) {
                 System.out.println(ANSI_BLUE + "CHOOSE AN ORDER");
 
                 if (!mafia_done)
@@ -196,15 +196,15 @@ public class the_main {
                 else if (detedctive_done)
                     System.out.println(ANSI_RED + "3- DETECTIVE SEARCH");
 
-                if (!silebcer_done)
+              /*  if (!silebcer_done)
                     System.out.println(ANSI_BLUE + "4- SILENCER");
                 if (silebcer_done)
-                    System.out.println(ANSI_RED + "4- SILENCER");
+                    System.out.println(ANSI_RED + "4- SILENCER");*/
                 int order_1 = getin.nextInt();
                 switch (order_1) {
                     case (1):
-                        String name_1=getin.next();
-                        String name_2= getin.next();
+
+                        the_game.doctor_job();
                         mafia_done = true;
 
                         break;
@@ -214,10 +214,11 @@ public class the_main {
                     case (3):
                         detedctive_done = true;
                         break;
-                    default:
+                  /*  default:
                         silebcer_done = true;
-                        break;
+                        break;*/
                 }
+
             }
         }
 

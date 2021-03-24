@@ -6,6 +6,7 @@ public  class Player {
     boolean has_specific_roled;
     boolean is_silenced;
     boolean is_joker;
+    boolean is_suspect;
     boolean saved_by_doctor=false;
     boolean shot_by_mafia=false;
     public Player(){}
