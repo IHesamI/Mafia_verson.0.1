@@ -177,8 +177,8 @@ public class the_main {
             the_DAY.number++;
             the_game.reset_voting_number();
             System.out.println(ANSI_BLUE + the_night.name + " [" + the_night.number + "]");
-            boolean mafia_done = false, doctor_done = false, detedctive_done = false, silebcer_done = false;
-            while (!mafia_done || !doctor_done /*|| !silebcer_done*/|| !detedctive_done ) {
+            boolean mafia_done = false, doctor_done = false, detedctive_done = false,silebcer_done=false;
+            while (!mafia_done || !doctor_done || !detedctive_done ) {
                 System.out.println(ANSI_BLUE + "CHOOSE AN ORDER");
 
                 if (!mafia_done)
@@ -195,31 +195,73 @@ public class the_main {
                     System.out.println(ANSI_BLUE + "3- DETECTIVE SEARCH");
                 else if (detedctive_done)
                     System.out.println(ANSI_RED + "3- DETECTIVE SEARCH");
-
-              /*  if (!silebcer_done)
+                if (!silebcer_done)
                     System.out.println(ANSI_BLUE + "4- SILENCER");
-                if (silebcer_done)
-                    System.out.println(ANSI_RED + "4- SILENCER");*/
+               else if(silebcer_done)
+                System.out.println(ANSI_RED + "4- SILENCER");
+
+
                 int order_1 = getin.nextInt();
                 switch (order_1) {
                     case (1):
-
-                        the_game.doctor_job();
+                        System.out.println(ANSI_BLUE+"THE MAFIA ELECTION");
+                        the_game.mafia_election();
                         mafia_done = true;
-
                         break;
+
                     case (2):
+                        the_game.doctor_job();
                         doctor_done = true;
                         break;
+
                     case (3):
+                        the_game.detective_job();
                         detedctive_done = true;
+                         break;
+                    default:
+                        the_game.silencer_job();
+                        silebcer_done=true;
                         break;
-                  /*  default:
-                        silebcer_done = true;
-                        break;*/
+
                 }
 
             }
+            if(the_game.player_should_be_deleted())
+            {
+
+                if(!the_game.the_doctor_choosed.name.equals(the_game.the_players[the_game.find_the_max()].name))
+                    the_game.the_players[the_game.find_the_max()].is_alive=false;
+
+            }
+
+                else{
+                    if(the_game.how_many_max()==2)
+                    {   Player[] the_killed=new Player[2];
+                        the_killed= the_game.the_names_of_killed();
+                        if(the_game.the_doctor_choosed.name.equals(the_killed[0].name))
+                        {
+                            for(int z=0;z<the_game.the_players.length;z++)
+                                if(the_game.the_players[z].name.equals(the_killed[1].name))
+                                {   the_killed[1].is_alive=false;
+                                    the_game.the_players[z].is_alive=false;
+                                }
+
+                        }
+                        else if(the_game.the_doctor_choosed.name.equals(the_killed[1].name))
+                        {
+                                for(int z=0;z<the_game.the_players.length;z++)
+                                    if(the_game.the_players[z].name.equals(the_killed[0].name))
+                                    {   the_killed[0].is_alive=false;
+                                        the_game.the_players[z].is_alive=false;
+                                    }
+                        }
+                    }
+
+            }
+                the_game.reset_voting_number();
+
+
+
         }
 
 
