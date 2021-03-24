@@ -117,6 +117,7 @@ public class the_main {
         System.out.println("Villagers = " + villager + ", mafias= " + the_mafias);
 
         while (!the_game.joker.won && the_mafias < villager) {
+            if(the_DAY.number==1)
             System.out.println(the_DAY.name + " [" + the_DAY.number + "]");
             i = 0;
             while (i < the_game.the_players.length) {
@@ -175,6 +176,7 @@ public class the_main {
                 System.out.println(ANSI_BRIGHT_YELLOW + "NOBODY DIED");
             }
             the_DAY.number++;
+            the_game.reset_the_silenced();
             the_game.reset_voting_number();
             System.out.println(ANSI_BLUE + the_night.name + " [" + the_night.number + "]");
             boolean mafia_done = false, doctor_done = false, detedctive_done = false,silebcer_done=false;
@@ -229,14 +231,19 @@ public class the_main {
             if(the_game.player_should_be_deleted())
             {
 
-                if(!the_game.the_doctor_choosed.name.equals(the_game.the_players[the_game.find_the_max()].name))
+                if(!the_game.the_doctor_choosed.name.equals(the_game.the_players[the_game.find_the_max()].name)){
                     the_game.the_players[the_game.find_the_max()].is_alive=false;
+                    villager--;
+
+                }
+
+                the_game.mafias_number1_choosed=the_game.the_players[the_game.find_the_max()];
 
             }
 
                 else{
                     if(the_game.how_many_max()==2)
-                    {   Player[] the_killed=new Player[2];
+                    {   Player[] the_killed;
                         the_killed= the_game.the_names_of_killed();
                         if(the_game.the_doctor_choosed.name.equals(the_killed[0].name))
                         {
@@ -244,7 +251,11 @@ public class the_main {
                                 if(the_game.the_players[z].name.equals(the_killed[1].name))
                                 {   the_killed[1].is_alive=false;
                                     the_game.the_players[z].is_alive=false;
+                                    the_game.mafias_number1_choosed=the_killed[1];
                                 }
+
+                            the_game.mafias_number2_choosed=the_killed[0];
+                            villager--;
 
                         }
                         else if(the_game.the_doctor_choosed.name.equals(the_killed[1].name))
@@ -253,16 +264,54 @@ public class the_main {
                                     if(the_game.the_players[z].name.equals(the_killed[0].name))
                                     {   the_killed[0].is_alive=false;
                                         the_game.the_players[z].is_alive=false;
+                                        the_game.mafias_number1_choosed=the_killed[0];
                                     }
+                                the_game.mafias_number2_choosed=the_killed[1];
+                            villager--;
                         }
+
+
                     }
 
             }
-                the_game.reset_voting_number();
+                System.out.println(ANSI_BLUE +" TO END THE NIGHT ENTER THE :  end_night");
+                order= getin.next();
+                while (!order.equals("end_night"))
+                {
+                    System.out.println(ANSI_RED +" WRONG ORDER , TRY AGAIN");
+                    order= getin.next();
+                }
+                the_night.number++;
+            System.out.println(the_DAY.name + " [" + the_DAY.number + "]");
 
+            if(the_game.player_should_be_deleted())
+            {
+                System.out.println(ANSI_YELLOW + "MAFIA TRIED TO KILL "+the_game.mafias_number1_choosed.name);
+                if(the_game.mafias_number1_choosed.is_alive)
+                    System.out.println(ANSI_YELLOW +the_game.mafias_number1_choosed.name + "is alive ");
+                else System.out.println(ANSI_YELLOW +the_game.mafias_number1_choosed.name + "was killed ");
+            }
+            else{
+                if(the_game.how_many_max()==2 && the_game.mafias_number1_choosed!=null)
+                {
+                    System.out.println(ANSI_YELLOW + "MAFIA TRIED TO KILL "+the_game.mafias_number1_choosed.name+" AND "+the_game.mafias_number1_choosed.name);
+                    System.out.println(ANSI_YELLOW +the_game.mafias_number1_choosed.name + "was killed ");
+                }
+                else  System.out.println(ANSI_YELLOW + "MAFIA TRIED TO KILL MULTIPLE TARGETS ");
 
-
+            }
+            System.out.println(ANSI_YELLOW +the_game.player_silenced.name +" is silenced");
+            the_game.reset_voting_number();
+            if (the_mafias >= villager) {
+                System.out.println(ANSI_RED + "MAFIA WON!!");
+                break;
+            }
+            the_game.mafias_number1_choosed=null;
+            the_game.mafias_number2_choosed=null;
+                the_game.player_silenced=null;
         }
+
+
 
 
     }

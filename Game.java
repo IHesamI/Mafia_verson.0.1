@@ -5,7 +5,7 @@ public class Game {
     public static final String ANSI_RED = "\u001B[31m";
     Player[] the_players;
     Player the_doctor_choosed = new Player();
-    Player mafias_number1_choosed = new Player(), mafias_number2_choosed = new Player();
+    Player mafias_number1_choosed /*= new Player()*/, mafias_number2_choosed /*= new Player()*/,player_silenced;
 
     String[] the_roles = {"Joker", "villager", "detective", "doctor", "bulletproof", "mafia", "godfather", "silencer"};
     Joker joker = new Joker();
@@ -184,11 +184,18 @@ public class Game {
             } else System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT");
         }
     }
+    public void reset_the_silenced(){
+        for (int i = 0; i < the_players.length; i++)
+            the_players[i].is_silenced=false;
+    }
 
     public void silenced(String name) {
         for (int i = 0; i < the_players.length; i++)
             if (the_players[i].name.equals(name))
-                the_players[i].is_silenced = true;
+            {the_players[i].is_silenced = true;
+                player_silenced=the_players[i];
+            }
+
     }
 
     public void silencer_job() {
