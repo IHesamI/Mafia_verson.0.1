@@ -9,6 +9,7 @@ public  class Player {
     boolean is_suspect;
     boolean saved_by_doctor=false;
     boolean shot_by_mafia=false;
+
     public Player(){}
 
     public  Player (String name){

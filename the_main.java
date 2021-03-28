@@ -44,7 +44,6 @@ public class the_main {
     public static final String ANSI_BRIGHT_BG_WHITE = "\u001B[107m";
 
 
-
     public static void main(String[] arg) {
         int the_mafias = 0, villager = 0;
         String order;
@@ -106,7 +105,7 @@ public class the_main {
                 i++;
             }
         }
-               the_game.role_maker();
+        the_game.role_maker();
 
 
         for (int j = 0; j < the_game.the_players.length; j++) {
@@ -128,20 +127,24 @@ public class the_main {
                 System.out.println(ANSI_BLUE + the_game.the_players[i].name + " " + ANSI_RED + the_game.the_players[i].role);
 
         }
-        System.out.println(ANSI_GREEN+"Villagers = " + villager +ANSI_RED+ " mafias= " + the_mafias);
+        System.out.println(ANSI_GREEN + "Villagers = " + villager + ANSI_RED + " mafias= " + the_mafias);
 
-        while (!the_game.joker.won && the_mafias < villager && the_mafias!=0) {
+        while (!the_game.joker.won && the_mafias < villager && the_mafias != 0) {
             if (the_DAY.number == 1)
-                System.out.println(ANSI_CYAN+the_DAY.name + " [" + the_DAY.number + "]");
+                System.out.println(ANSI_CYAN + the_DAY.name + " [" + the_DAY.number + "]");
             i = 0;
             while (i < the_game.the_players.length) {
+                System.out.print(ANSI_BLUE + "ENTER THE VOTER NAME AND THE VOTEE NAME:");
                 String voter = getin.next();
+
                 String votee = getin.next();
                 if (the_game.has_that_name(voter) && !the_game.Is_silenced(voter)) {
-                    if (the_game.has_that_name(votee) && the_game.Is_Votee_alive(votee)) {
+                    if (the_game.has_that_name(votee) && the_game.Is_Votee_alive(votee))
+                    {
                         System.out.println(ANSI_BLUE + "FOUND");
                         the_game.increase_the_votee(votee);
                         i++;
+                        System.out.println(ANSI_BLUE + i + " PLAYERS VOTE CORRECTLY");
                     } else if (!the_game.has_that_name(votee)) {
                         System.out.println(ANSI_RED + "USER NOT FOUND, TRY AGAIN");
                     } else {
@@ -153,7 +156,7 @@ public class the_main {
                     System.out.println(ANSI_RED + "VOTER IS SILENCED, NEXT PERSON MUST CHOOSE");
                     i++;
                 }
-                System.out.println(ANSI_BLUE + i + " PLAYERS VOTE CORRECTLY");
+
 
             }
             System.out.println(ANSI_BLUE + "TO END THE VOTAION ENTER : end_vote");
@@ -174,6 +177,7 @@ public class the_main {
                     System.out.println(ANSI_BRIGHT_YELLOW + "JOKER WON!!");
                     break;
                 }
+                System.out.println(ANSI_RED + the_game.the_players[the_game.find_the_max()].name+" DIED");
 
             }
             if (the_mafias >= villager) {
@@ -183,15 +187,15 @@ public class the_main {
             if (the_mafias == 0) {
                 System.out.println(ANSI_BRIGHT_GREEN + "VILLAGER WON!!");
                 break;
-            } else {
+            } else if(!the_game.player_should_be_deleted()) {
                 System.out.println(ANSI_BRIGHT_YELLOW + "NOBODY DIED");
             }
             the_DAY.number++;
             the_game.reset_the_silenced();
             the_game.reset_voting_number();
-            System.out.println(ANSI_BLUE + the_night.name + " [" + the_night.number + "]");
+            System.out.println(ANSI_CYAN + the_night.name + " [" + the_night.number + "]");
             boolean mafia_done = false, doctor_done = false, detedctive_done = false, silebcer_done = false;
-            while (!mafia_done || !doctor_done || !detedctive_done|| !silebcer_done) {
+            while (!mafia_done || !doctor_done || !detedctive_done || !silebcer_done) {
                 System.out.println(ANSI_BLUE + "CHOOSE AN ORDER");
 
                 if (!mafia_done)
@@ -242,9 +246,18 @@ public class the_main {
             if (the_game.player_should_be_deleted()) {
 
                 if (!the_game.the_doctor_choosed.name.equals(the_game.the_players[the_game.find_the_max()].name)) {
-                    the_game.the_players[the_game.find_the_max()].is_alive = false;
-                    villager--;
+                    if (the_game.Bulletproof.name!=null&&the_game.Bulletproof.name.equals(the_game.the_players[the_game.find_the_max()].name)) {
+                        if (the_game.Bulletproof.getIS()) {
+                            the_game.Bulletproof.change_the_shiled();
+                        } else {
+                            the_game.the_players[the_game.find_the_max()].is_alive = false;
+                            villager--;
+                        }
 
+                    } else {
+                        the_game.the_players[the_game.find_the_max()].is_alive = false;
+                        villager--;
+                    }
                 }
 
                 the_game.mafias_number1_choosed = the_game.the_players[the_game.find_the_max()];
@@ -256,9 +269,20 @@ public class the_main {
                     if (the_game.the_doctor_choosed.name.equals(the_killed[0].name)) {
                         for (int z = 0; z < the_game.the_players.length; z++)
                             if (the_game.the_players[z].name.equals(the_killed[1].name)) {
-                                the_killed[1].is_alive = false;
-                                the_game.the_players[z].is_alive = false;
-                                the_game.mafias_number1_choosed = the_killed[1];
+                                if (the_game.Bulletproof.name!=null&&!the_game.Bulletproof.name.equals(the_game.the_players[z].name)) {
+                                    the_killed[1].is_alive = false;
+                                    the_game.the_players[z].is_alive = false;
+                                    the_game.mafias_number1_choosed = the_killed[1];
+                                } else {
+                                    if (the_game.Bulletproof.name!=null&&the_game.Bulletproof.getIS()) {
+                                        the_game.Bulletproof.change_the_shiled();
+                                    } else {
+                                        the_killed[1].is_alive = false;
+                                        the_game.the_players[z].is_alive = false;
+                                        the_game.mafias_number1_choosed = the_killed[1];
+                                    }
+                                }
+
                             }
 
                         the_game.mafias_number2_choosed = the_killed[0];
@@ -267,10 +291,25 @@ public class the_main {
                     } else if (the_game.the_doctor_choosed.name.equals(the_killed[1].name)) {
                         for (int z = 0; z < the_game.the_players.length; z++)
                             if (the_game.the_players[z].name.equals(the_killed[0].name)) {
-                                the_killed[0].is_alive = false;
-                                the_game.the_players[z].is_alive = false;
-                                the_game.mafias_number1_choosed = the_killed[0];
+                                {
+                                    if (the_game.Bulletproof.name!=null&&!the_game.Bulletproof.name.equals(the_game.the_players[z].name)) {
+                                        the_killed[0].is_alive = false;
+                                        the_game.the_players[z].is_alive = false;
+                                        the_game.mafias_number1_choosed = the_killed[0];
+                                    } else {
+                                        if (the_game.Bulletproof.name!=null&&the_game.Bulletproof.getIS()) {
+                                            the_game.Bulletproof.change_the_shiled();
+                                        } else {
+                                            the_killed[0].is_alive = false;
+                                            the_game.the_players[z].is_alive = false;
+                                            the_game.mafias_number1_choosed = the_killed[0];
+                                        }
+                                    }
+
+                                }
                             }
+                        /*
+*/
                         the_game.mafias_number2_choosed = the_killed[1];
                         villager--;
                     }
@@ -300,9 +339,9 @@ public class the_main {
                 } else System.out.println(ANSI_YELLOW + "MAFIA TRIED TO KILL MULTIPLE TARGETS ");
 
             }
-            if(the_game.player_silenced.name!=null)
-            System.out.println(ANSI_YELLOW + the_game.player_silenced.name + " is silenced");
-            the_game.player_silenced=null;
+            if (the_game.player_silenced.name != null)
+                System.out.println(ANSI_YELLOW + the_game.player_silenced.name + " is silenced");
+            the_game.player_silenced = null;
             the_game.reset_voting_number();
             if (the_mafias >= villager) {
                 System.out.println(ANSI_RED + "MAFIA WON!!");
