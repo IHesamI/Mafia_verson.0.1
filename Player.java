@@ -13,6 +13,7 @@ public  class Player {
 
     public  Player (String name){
         this.name=name;
+        this.is_alive=true;
     }
 
     public  void change_the_class(Player player){};
