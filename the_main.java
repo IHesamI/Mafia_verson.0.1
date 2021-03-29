@@ -87,15 +87,12 @@ public class the_main {
         while (!order.equals("assign_role")) {
             System.out.println(ANSI_RED + "WRONG ORDER , TRY AGAIN");
             order = getin.next();
-
         }
-      /*  for (int j = 0; j < the_game.the_players.length; j++) {
-            System.out.println(ANSI_RED + the_game.the_players[j].name);
-        }*/
+
         int i = 0;
         while (i < the_game.the_players.length) {
+            System.out.println(ANSI_BLUE +"ENTER THE PLAYER NAME AND THE ROLE:");
             String name = getin.next();
-            /* System.out.print(ANSI_RED +name);*/
             String ROLE = getin.next();
             if (the_game.has_that_name(name) && the_game.has_the_role(ROLE)) {
                 the_game.set_role(name, ROLE);
@@ -132,8 +129,10 @@ public class the_main {
         while (!the_game.joker.won && the_mafias < villager && the_mafias != 0) {
             if (the_DAY.number == 1)
                 System.out.println(ANSI_CYAN + the_DAY.name + " [" + the_DAY.number + "]");
+            int the_silenced=0;
             i = 0;
-            while (i < the_game.the_players.length) {
+            while (i + the_silenced< the_game.the_players.length) {
+
                 System.out.print(ANSI_BLUE + "ENTER THE VOTER NAME AND THE VOTEE NAME:");
                 String voter = getin.next();
 
@@ -154,7 +153,7 @@ public class the_main {
                     System.out.println(ANSI_RED + "USER NOT FOUND, TRY AGAIN");
                 } else if (the_game.Is_silenced(voter)) {
                     System.out.println(ANSI_RED + "VOTER IS SILENCED, NEXT PERSON MUST CHOOSE");
-                    i++;
+                    the_silenced++;
                 }
 
 

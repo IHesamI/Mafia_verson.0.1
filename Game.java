@@ -153,7 +153,7 @@ public class Game {
     public int how_many_max(){
         int maxes=0;
         for (int i = 0; i < the_players.length; i++)
-            if(the_players[find_the_max()].voting_numbers == the_players[i].voting_numbers && i !=find_the_max())
+            if(the_players[find_the_max()].voting_numbers == the_players[i].voting_numbers)
                     maxes++;
             return  maxes;
 
@@ -256,11 +256,12 @@ public class Game {
         boolean is_done=false;
         if (Silencer.name != null) {
             while (!is_done){
-                System.out.println("ENTER THE SILENCER NAME AND ENTER THE SILENCED GUY:");
+                System.out.println(ANSI_BLUE+"ENTER THE SILENCER NAME AND ENTER THE SILENCED GUY:");
                 String name = getter.next();
 
                 String name2 = getter.next();
-                if (has_that_name(name) && Silencer.name.equals(name)) {
+                if (has_that_name(name) && Silencer.name.equals(name))
+                {
                     if (Is_Votee_alive(name)) {
                         if (Is_Votee_alive(name2)) {
                             is_done=true;
@@ -268,6 +269,8 @@ public class Game {
                         } else System.out.println(ANSI_RED + "VOTEE IS DEAD");
                     } else System.out.println(ANSI_RED + "SILENCER IS DEAD");
                 }
+
+                else
                 System.out.println(ANSI_RED + "USER NOT FOUND");
             }
         }
@@ -288,7 +291,7 @@ public class Game {
         int the_number=0;
         System.out.print("THE MAFIAS ARE : ");
         for (int i = 0; i < the_players.length; i++) {
-            if (!the_players[i].is_villager && !the_players[i].is_joker) {
+            if (!the_players[i].is_villager && !the_players[i].is_joker&& !the_players[i].is_alive) {
                 the_number++;
                 System.out.print(the_players[i].name+" ");
             }
