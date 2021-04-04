@@ -19,7 +19,7 @@ public class Game {
     bulletproof Bulletproof = new bulletproof();
     godfather Godfather = new godfather();
     silencer Silencer = new silencer();
-
+            // methodi ke baraye bazikoni ke naqsh nadarad naqsh moshakhas mikonad
     public void role_maker() {
         for (int i = 0; i < the_players.length; i++) {
             if (the_players[i].role == null) {
@@ -63,6 +63,7 @@ public class Game {
         }
     }
 
+    /*methodi ke esm bazikonan ro moshakhas mikonad*/
 
     public void setThe_players(String[] players_name) {
         the_players = new Player[players_name.length];
@@ -71,6 +72,8 @@ public class Game {
 
         }
     }
+
+    /*methodi ke moshakhas mikonad ke aya naqsh dorost vared shode ya na*/
 
     public boolean has_the_role(String role) {
         for (String the_role : the_roles) {
@@ -82,6 +85,8 @@ public class Game {
     }
 
 
+    /*methodi ke moshakhas mikonad ke aya esm dorost vared shode ya na*/
+
     public boolean has_that_name(String name) {
         for (Player the_player : the_players) {
             if (the_player.name.equals(name)) {
@@ -91,12 +96,14 @@ public class Game {
         return false;
     }
 
+    /*methodi ke moshakhas tedad raiy haye bazikon ra afzayesh midahad*/
     public void increase_the_votee(String name) {
         for (int i = 0; i < the_players.length; i++) {
             if (the_players[i].name.equals(name))
                 the_players[i].voting_numbers++;
         }
     }
+    /*methodi ke moshakhas mikonad ke aya bazikon silence ast ya na*/
 
     public boolean Is_silenced(String name) {
         for (Player the_player : the_players) {
@@ -107,7 +114,7 @@ public class Game {
         }
         return false;
     }
-
+    /*methodi ke save tavasot doctor ra false mikonad baraye hame */
     public void reset_the_saved() {
         for (int i = 0; i < the_players.length; i++) {
             if (the_players[i].saved_by_doctor) {
@@ -117,9 +124,7 @@ public class Game {
         }
     }
 
-    public void day_election() {
-
-    }
+    /*methodi ke vaqti 2 bazikon dar shab koshte mishavand 2 bazikon ra peyda karde va list bazikonan ra taqir midahad */
 
     public void change_the_list_of_players(Player[] players) {
         for (int j = 0; j < players.length; j++)
@@ -130,6 +135,7 @@ public class Game {
 
     }
 
+    /*methodi ke bazikoni ke doctor save karde ra moshakhas mikonad*/
 
     public void find_the_doctor_chosed(String name) {
 
@@ -143,6 +149,8 @@ public class Game {
 
     }
 
+    /*methodi ke bazikoni ke moshakhas mikonad bazikoni ba in esm darim?*/
+
     public boolean Is_Votee_alive(String name) {
         for (Player the_player : the_players) {
             if (the_player.name.equals(name)) {
@@ -153,10 +161,15 @@ public class Game {
         return false;
     }
 
+    /*methodi ke tedad raiyhaye bazikonan ro 0 mikonad bad az har shab va roz*/
+
     public void reset_voting_number() {
         for (int i = 0; i < the_players.length; i++)
             the_players[i].voting_numbers = 0;
     }
+
+
+    /*methodi ke  bazikonani ke dar shab koshte shode and ro bar migardanad */
 
     public Player[] the_names_of_killed() {
         Player[] the_killed = new Player[2];
@@ -169,6 +182,7 @@ public class Game {
 
         return the_killed;
     }
+    /*methodi ke  bazikoni ba bishtarin raiy ra bar migardanad*/
 
     public int find_the_max() {
         int the_most_voted_player_index = 0, max = 0;
@@ -180,6 +194,8 @@ public class Game {
         }
         return the_most_voted_player_index;
     }
+    /*methodi ke  moshakhas mikonad ke chand bazikon ba bishtarin raiy hast*/
+
 
     public int how_many_max() {
         int maxes = 0;
@@ -189,6 +205,8 @@ public class Game {
         return maxes;
 
     }
+
+    /*methodi ke  moshakhas mikonad ke aya dar roz  bazikon bayad hazf shavad?*/
 
     public boolean player_should_be_deleted() {
         int the_most_voted_player_index = find_the_max();
@@ -201,6 +219,9 @@ public class Game {
 
     }
 
+
+    /*methodi ke  moshakhas mikonad ke aya bazikon qablan tavasot detective porside shode ast*/
+
     public boolean IS_SUPECTED_BEFORE(String name) {
         for (Player the_player : the_players) {
             if (the_player.name.equals(name)) {
@@ -211,6 +232,8 @@ public class Game {
         return false;
 
     }
+
+    /*methodi ke vazife  detective dar shab ra anjam midahad*/
 
     public void detective_job(String name1, String name2) {
         boolean is_done = false;
@@ -245,6 +268,8 @@ public class Game {
         else System.out.println(ANSI_RED + "DONT HAVE DETECTIVE");
     }
 
+    /*methodi ke  shakhaye detective ra chap mikonad*/
+
     public void detective(String name) {
         for (Player the_player : the_players)
             if (the_player.name.equals(name)) {
@@ -257,6 +282,8 @@ public class Game {
             }
     }
 
+    /*methodi ke  moshakhas mikonad ke aya player naqsh khasi darad*/
+
     public void the_player_voote_has_special_role(Player player) {
         if (player.name.equals(DETECTVIE.name))
             DETECTVIE.is_alive = false;
@@ -267,6 +294,7 @@ public class Game {
 
     }
 
+    /*methodi ke vazife  doctor dar shab ra anjam midahad*/
 
     public void doctor_job(String name1, String name2) {
         boolean is_done = false;
@@ -274,7 +302,7 @@ public class Game {
             while (!is_done) {
                 if (Doctor.name.equals(name1)) {
                     if (Doctor.is_alive) {
-                        if (has_that_name(name2) && Is_Votee_alive(name2)) {
+                        if (has_that_name(name2) && Is_Votee_alive(name2)&&Is_Votee_alive(name1)) {
                             find_the_doctor_chosed(name2);
                             is_done = true;
                         } else if (!has_that_name(name2)) {
@@ -284,7 +312,12 @@ public class Game {
                             System.out.println(ANSI_RED + " USER IS DEAD,ENTER ANOTHER NAME");
                             name2 = getter.next();
                         }
-                    } else {
+
+
+                        }   else if(!Is_Votee_alive(name1))
+                            System.out.println(ANSI_RED +name1+ "  IS DEAD,ENTER ANOTHER NAME");
+
+                    else {
                         System.out.println(ANSI_RED + "DOCTOR IS DEAD");
                         is_done = true;
                         Doctor.is_alive=false;
@@ -297,11 +330,14 @@ public class Game {
             }
         else System.out.println(ANSI_RED + "DOCTOR NOT FOUND");
     }
+    /*methodi ke baraye bazikonan silence ra false mikonad*/
 
     public void reset_the_silenced() {
         for (int i = 0; i < the_players.length; i++)
             the_players[i].is_silenced = false;
     }
+
+    /*methodi ke bazikon ra silence mikoanad*/
 
     public void silenced(String name) {
 
@@ -312,6 +348,9 @@ public class Game {
             }
     }
 
+
+    /*methodi ke moshakas mikonad ke aya  kasi silence shode ya na?!*/
+
     public boolean has_the_silenced() {
 
         for (int i = 0; i < the_players.length; i++)
@@ -321,15 +360,7 @@ public class Game {
         return false;
     }
 
-
-    public void reset_silenced() {
-
-        for (int i = 0; i < the_players.length; i++) {
-            the_players[i].is_silenced = true;
-        }
-
-    }
-
+            // methodi ke esm bazikone silence ra barmigardanad
     public String return_silenced() {
         String name = "";
         for (int i = 0; i < the_players.length; i++) {
@@ -339,6 +370,7 @@ public class Game {
         return name;
     }
 
+    // methodi ke tedad bazikonan zende ra barmigardanad
 
     public int how_many_alive() {
         int sum = 0;
@@ -348,7 +380,7 @@ public class Game {
         return sum;
     }
 
-
+    // methodi ke vazife silencer ra anjam midahad
     public void silencer_job(String name, String name2) {
         boolean is_done = false;
         if (Silencer.name != null) {
@@ -368,7 +400,7 @@ public class Game {
                                 name2 = getter.next();
                             }
                         } else {
-                            System.out.println(ANSI_RED + name2 + " VOTEE NOT FOUND ,ENTER AGAIN");
+                            System.out.println(ANSI_RED + name2 + " NOT FOUND ,ENTER AGAIN");
                             name2 = getter.next();
                         }
                     } else {
@@ -385,7 +417,7 @@ public class Game {
             }
         } else System.out.println(ANSI_RED + "SILENCER NOT FOUND");
     }
-
+    // methodi ke moshakhas mikonad ke aya bazikon mafia ast ya na~!?
     public boolean is_mafia(String name) {
         for (int i = 0; i < the_players.length; i++) {
             if (the_players[i].name.equals(name))
@@ -396,6 +428,9 @@ public class Game {
         }
         return false;
     }
+
+    // methodi ke raiy giri mafia ro anjam midahad
+
 
     public void mafia_election(String name) {
         System.out.println(ANSI_BLUE + "FOR VOTING ENTER V,TO END VOTING ENTER X");
@@ -417,19 +452,26 @@ public class Game {
 
         if (has_that_name(name)) {
             if (is_mafia(name)) {
-                if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name)) {
+
+                if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name))
+                {
                     success_elected = true;
                     increase_the_votee(name2);
-                } else if (!has_that_name(name2)) {
+                }
+                else if (!has_that_name(name2))
+                {
                     System.out.println(ANSI_RED + "USER NOT FOUND ,ENTER THE VOTEE NAME AGAIN ");
-                    name2 = getter.next();
-                } else if (!Is_Votee_alive(name2)) {
-                    System.out.println(ANSI_RED + "THE VOTEE IS ALREDY DEAD,ENTER AGAIN");
-                    name2 = getter.next();
-                } else if (!Is_Votee_alive(name)) {
+
+                } else if (!Is_Votee_alive(name2))
+                {
+                    System.out.println(ANSI_RED + "THE VOTEE IS ALREDY DEAD");
+
+                } else if (!Is_Votee_alive(name))
+                {
                     System.out.println(ANSI_RED + name + " IS ALREDY DEAD");
                 }
-            } else {
+            }
+            else {
                 System.out.println(ANSI_RED + "THE PLAYER CANT WAKE ");
 
             }
@@ -437,6 +479,7 @@ public class Game {
 
     }
 
+    // methodi ke naqsh har bazikon ra moshkhas mikonad
 
     public void set_role(String name, String role) {
         if (has_that_name(name) && has_the_role(role)) {
