@@ -35,20 +35,18 @@ public class Game {
                 if (the_players[i].role.equals("Joker")) {
                     joker.change_the_class(the_players[i]);
                     the_players[i].is_joker = true;
-                }
-                else if (the_players[i].role.equals("detective")) {
+                } else if (the_players[i].role.equals("detective")) {
                     the_players[i].is_villager = true;
                     DETECTVIE.change_the_class(the_players[i]);
-                }
-                else if (the_players[i].role.equals("doctor")) {
+                } else if (the_players[i].role.equals("doctor")) {
                     the_players[i].is_villager = true;
                     Doctor.change_the_class(the_players[i]);
-                }
-                else if (the_players[i].role.equals("bulletproof")) {
+                } else if (the_players[i].role.equals("bulletproof"))
+                {
+                    the_players[i].shield = true;
                     the_players[i].is_villager = true;
                     Bulletproof.change_the_class(the_players[i]);
-                }
-                else if (the_players[i].role.equals("godfather")) {
+                } else if (the_players[i].role.equals("godfather")) {
                     the_players[i].is_villager = false;
                     Godfather.change_the_class(the_players[i]);
                 } else if (the_players[i].role.equals("silencer")) {
@@ -237,6 +235,7 @@ public class Game {
                     } else {
                         is_done = true;
                         System.out.println(ANSI_RED + "DETECTIVE IS DEAD");
+                        DETECTVIE.is_alive=false;
                     }
                 } else {
                     System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT,ENTER THE DETECTIVE NAME");
@@ -288,6 +287,7 @@ public class Game {
                     } else {
                         System.out.println(ANSI_RED + "DOCTOR IS DEAD");
                         is_done = true;
+                        Doctor.is_alive=false;
                     }
 
                 } else {
@@ -325,7 +325,7 @@ public class Game {
     public void reset_silenced() {
 
         for (int i = 0; i < the_players.length; i++) {
-            the_players[i].is_silenced = false;
+            the_players[i].is_silenced = true;
         }
 
     }
@@ -362,8 +362,9 @@ public class Game {
                                 Silencer.job_done = true;
                                 is_done = true;
                                 silenced(name2);
-                            } else if (!Is_Votee_alive(name2)) {
-                                System.out.println(ANSI_RED + "VOTEE IS DEAD");
+                            }
+                            else if (!Is_Votee_alive(name2)) {
+                                System.out.println(ANSI_RED + "VOTEE IS DEAD,ENTER ANOTHER NAME");
                                 name2 = getter.next();
                             }
                         } else {
@@ -373,11 +374,14 @@ public class Game {
                     } else {
                         System.out.println(ANSI_RED + "SILENCER IS DEAD");
                         Silencer.job_done = true;
+                        Silencer.is_alive=false;
                         is_done = true;
                     }
-                } else
-                    System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE SILENCER NAME");
-                name = getter.next();
+                }
+                else{System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE SILENCER NAME");
+                    name = getter.next();
+                }
+
             }
         } else System.out.println(ANSI_RED + "SILENCER NOT FOUND");
     }
@@ -399,8 +403,10 @@ public class Game {
         char ORDER = 'c';
         while (ORDER != 'X') {
             ORDER = getter.next().charAt(0);
-            if (ORDER == 'V')
+            if (ORDER == 'V'){
+                System.out.println(ANSI_YELLOW+"ENTER THE VOTEE PLAYER NAME");
                 name2 = getter.next();
+            }
         }
 
 
@@ -449,7 +455,8 @@ public class Game {
                     } else if (role.equals("doctor")) {
                         the_players[i].is_villager = true;
                         Doctor.change_the_class(the_players[i]);
-                    } else if (role.equals("bulletproof")) {
+                    } else if (role.equals("bulletproof"))
+                    {
                         the_players[i].shield = true;
                         the_players[i].is_villager = true;
                         Bulletproof.change_the_class(the_players[i]);

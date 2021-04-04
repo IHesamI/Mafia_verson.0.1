@@ -10,8 +10,6 @@ public  class Player {
     boolean saved_by_doctor=false;
     boolean shield;
 
-
-
     public Player(){}
 
     public  Player (String name){
