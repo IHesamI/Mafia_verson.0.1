@@ -8,7 +8,9 @@ public  class Player {
     boolean is_joker;
     boolean is_suspect;
     boolean saved_by_doctor=false;
-    boolean shot_by_mafia=false;
+    boolean shield;
+
+
 
     public Player(){}
 

@@ -1,13 +1,16 @@
 import java.util.Scanner;
 
 public class Game {
+    int villagers, mafias;
+
     Scanner getter = new Scanner(System.in);
+    public boolean success_elected = false;
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
     Player[] the_players;
     Player the_doctor_choosed = new Player();
-    Player mafias_number1_choosed /*= new Player()*/, mafias_number2_choosed /*= new Player()*/,player_silenced;
+    Player mafias_number1_choosed /*= new Player()*/, mafias_number2_choosed /*= new Player()*/, player_silenced;
 
     String[] the_roles = {"Joker", "villager", "detective", "doctor", "bulletproof", "mafia", "godfather", "silencer"};
     Joker joker = new Joker();
@@ -17,32 +20,35 @@ public class Game {
     godfather Godfather = new godfather();
     silencer Silencer = new silencer();
 
-    public void role_maker(){
+    public void role_maker() {
         for (int i = 0; i < the_players.length; i++) {
-            if (the_players[i].role==null)
-            {   String ROEL;
-                System.out.println(ANSI_YELLOW+the_players[i].name+" DOESNT HAVE ANY ROLE ,ENTER THE ROLE");
+            if (the_players[i].role == null) {
+                String ROEL;
+                System.out.println(ANSI_YELLOW + the_players[i].name + " DOESNT HAVE ANY ROLE ,ENTER THE ROLE");
 
-                while (the_players[i].role==null){
-                     ROEL=getter.next();
-                    if(has_the_role(ROEL))
-                        the_players[i].role=ROEL;
-                    else  System.out.println(ANSI_RED + "ROLE NOT FOUND");
-
+                while (the_players[i].role == null) {
+                    ROEL = getter.next();
+                    if (has_the_role(ROEL))
+                        the_players[i].role = ROEL;
+                    else System.out.println(ANSI_RED + "ROLE NOT FOUND");
                 }
                 if (the_players[i].role.equals("Joker")) {
                     joker.change_the_class(the_players[i]);
                     the_players[i].is_joker = true;
-                } else if (the_players[i].role.equals("detective")) {
+                }
+                else if (the_players[i].role.equals("detective")) {
                     the_players[i].is_villager = true;
                     DETECTVIE.change_the_class(the_players[i]);
-                } else if (the_players[i].role.equals("doctor")) {
+                }
+                else if (the_players[i].role.equals("doctor")) {
                     the_players[i].is_villager = true;
                     Doctor.change_the_class(the_players[i]);
-                } else if (the_players[i].role.equals("bulletproof")) {
+                }
+                else if (the_players[i].role.equals("bulletproof")) {
                     the_players[i].is_villager = true;
                     Bulletproof.change_the_class(the_players[i]);
-                } else if (the_players[i].role.equals("godfather")) {
+                }
+                else if (the_players[i].role.equals("godfather")) {
                     the_players[i].is_villager = false;
                     Godfather.change_the_class(the_players[i]);
                 } else if (the_players[i].role.equals("silencer")) {
@@ -60,11 +66,12 @@ public class Game {
     }
 
 
-
     public void setThe_players(String[] players_name) {
-        the_players = new Player[players_name.length ];
-        for (int i = 0, k = 1; i < players_name.length; i++, k++)
+        the_players = new Player[players_name.length];
+        for (int i = 0; i < players_name.length; i++) {
             the_players[i] = new Player(players_name[i]);
+
+        }
     }
 
     public boolean has_the_role(String role) {
@@ -103,6 +110,29 @@ public class Game {
         return false;
     }
 
+    public void reset_the_saved() {
+        for (int i = 0; i < the_players.length; i++) {
+            if (the_players[i].saved_by_doctor) {
+                the_players[i].saved_by_doctor = false;
+
+            }
+        }
+    }
+
+    public void day_election() {
+
+    }
+
+    public void change_the_list_of_players(Player[] players) {
+        for (int j = 0; j < players.length; j++)
+            for (int i = 0; i < the_players.length; i++) {
+                if (the_players[i].name.equals(players[j].name))
+                    the_players[i] = players[j];
+            }
+
+    }
+
+
     public void find_the_doctor_chosed(String name) {
 
         for (int i = 0; i < the_players.length; i++) {
@@ -126,16 +156,18 @@ public class Game {
     }
 
     public void reset_voting_number() {
-        for (int i = 0; i < the_players.length; i++) the_players[i].voting_numbers = 0;
+        for (int i = 0; i < the_players.length; i++)
+            the_players[i].voting_numbers = 0;
     }
-    public  Player [] the_names_of_killed(){
-        Player [] the_killed=new Player[2];
 
-        for(int i=0,k=0;i<the_players.length;i++)
-                if(the_players[i].voting_numbers== the_players[find_the_max()].voting_numbers){
-                    the_killed[k]=the_players[i];
-                    k++;
-                }
+    public Player[] the_names_of_killed() {
+        Player[] the_killed = new Player[2];
+
+        for (int i = 0, k = 0; i < the_players.length; i++)
+            if (the_players[i].voting_numbers == the_players[find_the_max()].voting_numbers) {
+                the_killed[k] = the_players[i];
+                k++;
+            }
 
         return the_killed;
     }
@@ -150,12 +182,13 @@ public class Game {
         }
         return the_most_voted_player_index;
     }
-    public int how_many_max(){
-        int maxes=0;
+
+    public int how_many_max() {
+        int maxes = 0;
         for (int i = 0; i < the_players.length; i++)
-            if(the_players[find_the_max()].voting_numbers == the_players[i].voting_numbers)
-                    maxes++;
-            return  maxes;
+            if (the_players[find_the_max()].voting_numbers == the_players[i].voting_numbers)
+                maxes++;
+        return maxes;
 
     }
 
@@ -181,27 +214,36 @@ public class Game {
 
     }
 
-    public void detective_job() {
+    public void detective_job(String name1, String name2) {
         boolean is_done = false;
-        if(DETECTVIE.name!=null)
-        while (!is_done) {
-            System.out.println(ANSI_YELLOW + "ENTER THE DETECTIVE  AND THE SUSPECT NAME:");
-            String name1 = getter.next();
+        if (DETECTVIE.name != null)
+            while (!is_done) {
 
-            String name2 = getter.next();
-            if (DETECTVIE.name.equals(name1)) {
-                if (DETECTVIE.is_alive) {
-                    if (has_that_name(name2) && Is_Votee_alive(name2) && !IS_SUPECTED_BEFORE(name2)) {
-                        detective(name2);
+                if (DETECTVIE.name.equals(name1)) {
+                    if (DETECTVIE.is_alive) {
+                        if (has_that_name(name2) && Is_Votee_alive(name2) && !IS_SUPECTED_BEFORE(name2)) {
+                            detective(name2);
+                            is_done = true;
+                        } else if (!has_that_name(name2)) {
+                            System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE PLAYER NAME AGAIN");
+                            name2 = getter.next();
+                        } else if (IS_SUPECTED_BEFORE(name2)) {
+                            System.out.println(ANSI_RED + " DETECTIVE HAS ALREADY ASKED,ENTER ANOTHER NAME");
+                            name2 = getter.next();
+                        } else {
+                            System.out.println(ANSI_RED + " SUSPECT IS DEAD,ENTER ANOTHER NAME");
+                            name2 = getter.next();
+                        }
+                    } else {
                         is_done = true;
-                    } else if (!has_that_name(name2)) System.out.println(ANSI_RED + "USER NOT FOUND");
-                    else if (IS_SUPECTED_BEFORE(name2)) System.out.println(ANSI_RED + " DETECTIVE HAS ALREADY ASKED");
-                    else System.out.println(ANSI_RED + " SUSPECT IS DEAD");
-                } else
-                    System.out.println(ANSI_RED + "DETECTIVE IS DEAD");
-            } else System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT");
-        }
-        else  System.out.println(ANSI_RED + "DONT HAVE DETECTIVE");
+                        System.out.println(ANSI_RED + "DETECTIVE IS DEAD");
+                    }
+                } else {
+                    System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT,ENTER THE DETECTIVE NAME");
+                    name1 = getter.next();
+                }
+            }
+        else System.out.println(ANSI_RED + "DONT HAVE DETECTIVE");
     }
 
     public void detective(String name) {
@@ -209,170 +251,218 @@ public class Game {
             if (the_player.name.equals(name)) {
                 the_player.is_suspect = true;
                 if (the_player.is_villager || the_player.role.equals("godfather"))
-                    System.out.println(ANSI_RED+"NO");
+                    System.out.println(ANSI_RED + "NO");
                 else {
-                    System.out.println(ANSI_YELLOW+"YES");
+                    System.out.println(ANSI_YELLOW + "YES");
                 }
             }
     }
 
+    public void the_player_voote_has_special_role(Player player) {
+        if (player.name.equals(DETECTVIE.name))
+            DETECTVIE.is_alive = false;
+        if (player.name.equals(Doctor.name))
+            Doctor.is_alive = false;
+        if (player.name.equals(Silencer.name))
+            Silencer.is_alive = false;
 
-    public void doctor_job() {
+    }
+
+
+    public void doctor_job(String name1, String name2) {
         boolean is_done = false;
-        if(Doctor.name!=null)
-        while (!is_done) {
-            System.out.println(ANSI_BLUE+ "ENTER THE DOCTOR NAME AND DOCTOR CHOICE");
-            String name1 = getter.next();
-            String name2 = getter.next();
-            if (Doctor.name.equals(name1)) {
-                if (Doctor.is_alive) {
-                    if (has_that_name(name2) && Is_Votee_alive(name2)) {
-                        find_the_doctor_chosed(name2);
+        if (Doctor.name != null)
+            while (!is_done) {
+                if (Doctor.name.equals(name1)) {
+                    if (Doctor.is_alive) {
+                        if (has_that_name(name2) && Is_Votee_alive(name2)) {
+                            find_the_doctor_chosed(name2);
+                            is_done = true;
+                        } else if (!has_that_name(name2)) {
+                            System.out.println(ANSI_RED + "USER NOT FOUND,ENTER ANOTHER NAME");
+                            name2 = getter.next();
+                        } else if (!Is_Votee_alive(name2)) {
+                            System.out.println(ANSI_RED + " USER IS DEAD,ENTER ANOTHER NAME");
+                            name2 = getter.next();
+                        }
+                    } else {
+                        System.out.println(ANSI_RED + "DOCTOR IS DEAD");
                         is_done = true;
-                    } else if (!has_that_name(name2)) System.out.println(ANSI_RED + "USER NOT FOUND");
-                    else if(!Is_Votee_alive(name2)) System.out.println(ANSI_RED + " USER IS DEAD");
+                    }
+
+                } else {
+                    System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT,ENTER THE DETECTIVE NAME");
+                    name1 = getter.next();
                 }
-                else
-                    System.out.println(ANSI_RED + "USER IS DEAD");
-            } else System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT");
-        }
+            }
         else System.out.println(ANSI_RED + "DOCTOR NOT FOUND");
     }
-    public void reset_the_silenced(){
+
+    public void reset_the_silenced() {
         for (int i = 0; i < the_players.length; i++)
-            the_players[i].is_silenced=false;
+            the_players[i].is_silenced = false;
     }
 
     public void silenced(String name) {
+
         for (int i = 0; i < the_players.length; i++)
-            if (the_players[i].name.equals(name))
-            {the_players[i].is_silenced = true;
-                player_silenced=the_players[i];
+            if (the_players[i].name.equals(name)) {
+                the_players[i].is_silenced = true;
+                player_silenced = new Player(the_players[i].name);
             }
-
     }
 
-    public void silencer_job() {
-        boolean is_done=false;
-        if (Silencer.name != null) {
-            while (!is_done){
-                System.out.println(ANSI_BLUE+"ENTER THE SILENCER NAME AND ENTER THE SILENCED GUY:");
-                String name = getter.next();
+    public boolean has_the_silenced() {
 
-                String name2 = getter.next();
-                if (has_that_name(name) && Silencer.name.equals(name))
-                {
-                    if (Is_Votee_alive(name)) {
-                        if (Is_Votee_alive(name2)) {
-                            is_done=true;
-                            silenced(name2);
-                        } else System.out.println(ANSI_RED + "VOTEE IS DEAD");
-                    } else System.out.println(ANSI_RED + "SILENCER IS DEAD");
-                }
-
-                else
-                System.out.println(ANSI_RED + "USER NOT FOUND");
-            }
-        }
-        else System.out.println(ANSI_RED + "SILENCER NOT FOUND");
-    }
-    public boolean is_mafia(String name){
-        for (int i = 0; i < the_players.length; i++) {
-            if(the_players[i].name.equals(name))
-            if (!the_players[i].is_villager && !the_players[i].is_joker) {
+        for (int i = 0; i < the_players.length; i++)
+            if (the_players[i].is_silenced) {
                 return true;
-
             }
+        return false;
+    }
+
+
+    public void reset_silenced() {
+
+        for (int i = 0; i < the_players.length; i++) {
+            the_players[i].is_silenced = false;
+        }
+
+    }
+
+    public String return_silenced() {
+        String name = "";
+        for (int i = 0; i < the_players.length; i++) {
+            if (the_players[i].is_silenced)
+                name = the_players[i].name;
+        }
+        return name;
+    }
+
+
+    public int how_many_alive() {
+        int sum = 0;
+        for (int i = 0; i < the_players.length; i++)
+            if (the_players[i].is_alive)
+                sum++;
+        return sum;
+    }
+
+
+    public void silencer_job(String name, String name2) {
+        boolean is_done = false;
+        if (Silencer.name != null) {
+            while (!is_done) {
+
+                if (has_that_name(name) && Silencer.name.equals(name)) {
+                    if (Is_Votee_alive(name)) {
+
+                        if (has_that_name(name2)) {
+                            if (Is_Votee_alive(name2)) {
+                                Silencer.job_done = true;
+                                is_done = true;
+                                silenced(name2);
+                            } else if (!Is_Votee_alive(name2)) {
+                                System.out.println(ANSI_RED + "VOTEE IS DEAD");
+                                name2 = getter.next();
+                            }
+                        } else {
+                            System.out.println(ANSI_RED + name2 + " VOTEE NOT FOUND ,ENTER AGAIN");
+                            name2 = getter.next();
+                        }
+                    } else {
+                        System.out.println(ANSI_RED + "SILENCER IS DEAD");
+                        Silencer.job_done = true;
+                        is_done = true;
+                    }
+                } else
+                    System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE SILENCER NAME");
+                name = getter.next();
+            }
+        } else System.out.println(ANSI_RED + "SILENCER NOT FOUND");
+    }
+
+    public boolean is_mafia(String name) {
+        for (int i = 0; i < the_players.length; i++) {
+            if (the_players[i].name.equals(name))
+                if (!the_players[i].is_villager && !the_players[i].is_joker) {
+                    return true;
+
+                }
         }
         return false;
     }
 
-    public void mafia_election() {
-        int the_number=0;
-        System.out.print("THE MAFIAS ARE : ");
-        for (int i = 0; i < the_players.length; i++) {
-            if (!the_players[i].is_villager && !the_players[i].is_joker&& !the_players[i].is_alive) {
-                the_number++;
-                System.out.print(the_players[i].name+" ");
-            }
+    public void mafia_election(String name) {
+        System.out.println(ANSI_BLUE + "FOR VOTING ENTER V,TO END VOTING ENTER X");
+        String name2 = null;
+        char ORDER = 'c';
+        while (ORDER != 'X') {
+            ORDER = getter.next().charAt(0);
+            if (ORDER == 'V')
+                name2 = getter.next();
         }
-            while (the_number!=0)
-            {
-                System.out.println(ANSI_RED + "\nENTER THE VOTER AND THE VOTEES NAME");
-                String name = getter.next();
-                String name2 = getter.nextLine();
-                String[] the_choicese = name2.split(" ");
-                name2 = the_choicese[the_choicese.length - 1];
-                if(has_that_name(name)){
-                    if(is_mafia(name))
-                    {
-                        if(has_that_name(name2)&& Is_Votee_alive(name2)){
-                            increase_the_votee(name2); the_number--;
-                        }
-                    else if(!has_that_name(name2)){System.out.println(ANSI_RED + "USER NOT FOUND ,ENTER THE VOTEE NAME AGAIN ");}
-                    else if(!Is_Votee_alive(name2)){System.out.println(ANSI_RED + "THE VOTEE IS ALREDY DEAD");}
-                    }
-                    else {System.out.println(ANSI_RED + "THE PLAYER CANT WAKE ,");}
 
+
+        if (!Silencer.job_done && name.equals(Silencer.name)) {
+            silencer_job(name, name2);
+            return;
+        }
+
+        if (has_that_name(name)) {
+            if (is_mafia(name)) {
+                if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name)) {
+                    success_elected = true;
+                    increase_the_votee(name2);
+                } else if (!has_that_name(name2)) {
+                    System.out.println(ANSI_RED + "USER NOT FOUND ,ENTER THE VOTEE NAME AGAIN ");
+                    name2 = getter.next();
+                } else if (!Is_Votee_alive(name2)) {
+                    System.out.println(ANSI_RED + "THE VOTEE IS ALREDY DEAD,ENTER AGAIN");
+                    name2 = getter.next();
+                } else if (!Is_Votee_alive(name)) {
+                    System.out.println(ANSI_RED + name + " IS ALREDY DEAD");
                 }
-
-                else {System.out.println(ANSI_RED + "THERE IS NO PLAYER WITH SUCH NAME,TRY AGAIN");}
-            }
-
-        /*for (int i = 0; i < the_players.length; i++) {
-            if (!the_players[i].is_villager && !the_players[i].is_joker) {
-                String name = getter.next();
-                String name2 = getter.nextLine();
-                String[] the_choicese = name2.split(" ");
-                name2 = the_choicese[the_choicese.length - 1];
-                if (has_that_name(name)) {
-                    if(has_that_name(name2) && Is_Votee_alive(name2))
-                    {
-                        increase_the_votee(name2);
-                    }
-                    else if(!has_that_name(name2) ){System.out.println(ANSI_RED + "USER NOT JOINED") ;i--;}
-
-                    else if(!Is_Votee_alive(name2) ){System.out.println(ANSI_RED + "VOTEE ALREADY DEAD") ;i--;}
-
-                }
-                else {System.out.println(ANSI_RED + "USER NOT JOINED") ;i--;}
+            } else {
+                System.out.println(ANSI_RED + "THE PLAYER CANT WAKE ");
 
             }
+        } else System.out.println(ANSI_RED + "THERE IS NO SUCH PLAYER");
 
-        }*/
     }
 
 
     public void set_role(String name, String role) {
         if (has_that_name(name) && has_the_role(role)) {
-            for (Player the_player : the_players) {
-                if (the_player.name.equals(name)) {
-                    the_player.role = role;
-                    the_player.is_alive = true;
+            for (int i = 0; i < the_players.length; i++) {
+                if (the_players[i].name.equals(name)) {
+                    the_players[i].role = role;
+                    the_players[i].is_alive = true;
                     //{"Joker", "villager", "detective", "doctor", "bulletproof", "mafia","godfather","silencer"};
                     //
                     if (role.equals("Joker")) {
-                        joker.change_the_class(the_player);
-                        the_player.is_joker = true;
+                        joker.change_the_class(the_players[i]);
+                        the_players[i].is_joker = true;
                     } else if (role.equals("detective")) {
-                        the_player.is_villager = true;
-                        DETECTVIE.change_the_class(the_player);
+                        the_players[i].is_villager = true;
+                        DETECTVIE.change_the_class(the_players[i]);
                     } else if (role.equals("doctor")) {
-                        the_player.is_villager = true;
-                        Doctor.change_the_class(the_player);
+                        the_players[i].is_villager = true;
+                        Doctor.change_the_class(the_players[i]);
                     } else if (role.equals("bulletproof")) {
-                        the_player.is_villager = true;
-                        Bulletproof.change_the_class(the_player);
+                        the_players[i].shield = true;
+                        the_players[i].is_villager = true;
+                        Bulletproof.change_the_class(the_players[i]);
                     } else if (role.equals("godfather")) {
-                        the_player.is_villager = false;
-                        Godfather.change_the_class(the_player);
+                        the_players[i].is_villager = false;
+                        Godfather.change_the_class(the_players[i]);
                     } else if (role.equals("silencer")) {
-                        Silencer.change_the_class(the_player);
-                        the_player.is_villager = false;
+                        Silencer.change_the_class(the_players[i]);
+                        the_players[i].is_villager = false;
                     } else if (role.equals("mafia"))
-                        the_player.is_villager = false;
+                        the_players[i].is_villager = false;
                     else if (role.equals("villager")) {
-                        the_player.is_villager = true;
+                        the_players[i].is_villager = true;
                     }
                 }
             }
