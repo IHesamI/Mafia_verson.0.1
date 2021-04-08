@@ -313,7 +313,6 @@ public class the_main {
                     if (the_game.the_players[the_game.find_the_max()].role.equals("bulletproof")) {
                         // agar bulletproof bashad vali tir nakhorde bashad
                         if (the_game.the_players[the_game.find_the_max()].shield) {
-
                             the_game.the_players[the_game.find_the_max()].shield = false;
 
                         }
@@ -361,13 +360,13 @@ public class the_main {
                             players[0].shield = false;
                         } else {
                             players[0].is_alive = false;
-                            the_game.the_player_voote_has_special_role(players[1]);
+                            the_game.the_player_voote_has_special_role(players[0]);
 
                         }
 
                     } else {
                         players[0].is_alive = false;
-                        the_game.the_player_voote_has_special_role(players[1]);
+                        the_game.the_player_voote_has_special_role(players[0]);
 
                     }
 
@@ -388,6 +387,12 @@ public class the_main {
                     System.out.println(ANSI_BRIGHT_RED + the_game.the_players[the_game.find_the_max()].name + " IS DEAD ");
                     if (the_game.the_players[the_game.find_the_max()].is_villager)
                         villager--;
+                    if(the_game.the_players[the_game.find_the_max()].role.equals("informer"))
+                    {
+                        System.out.println(ANSI_BRIGHT_RED + the_game.the_players[the_game.find_the_max()].name + " IS INFOREMER");
+                        the_game.informer_job();
+
+                    }
                 }
             }
 
@@ -399,11 +404,24 @@ public class the_main {
                     if (players[1].is_villager)
                         villager--;
                 }
+                if(players[1].role.equals("informer"))
+                {
+                    System.out.println(ANSI_BRIGHT_RED + players[1].name + " IS INFOREMER");
+                    the_game.informer_job();
+
+                }
                 if (!players[0].is_alive && players[1].is_alive) {
                     System.out.println(ANSI_BRIGHT_YELLOW + " MAFIA TRIED TO KILL " + players[1].name + " AND " + players[0].name);
                     System.out.println(ANSI_BRIGHT_RED + players[0].name + " IS KILLED ");
                     if (players[0].is_villager)
                         villager--;
+                    if(players[0].role.equals("informer"))
+                    {
+                        System.out.println(ANSI_BRIGHT_RED + players[0].name + " IS INFOREMER");
+                        the_game.informer_job();
+
+                    }
+
                 }
                 if (players[0].is_alive && players[1].is_alive) {
                     System.out.println(ANSI_BRIGHT_YELLOW + " MAFIA TRIED TO KILL " + players[0].name + " AND " + players[1].name + " THEY BOTH ALIVE");

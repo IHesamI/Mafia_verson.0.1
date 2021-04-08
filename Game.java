@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
     int villagers, mafias;
@@ -12,14 +13,16 @@ public class Game {
     Player the_doctor_choosed = new Player();
     Player mafias_number1_choosed /*= new Player()*/, mafias_number2_choosed /*= new Player()*/, player_silenced;
 
-    String[] the_roles = {"Joker", "villager", "detective", "doctor", "bulletproof", "mafia", "godfather", "silencer"};
+    String[] the_roles = {"Joker", "villager", "detective", "doctor", "bulletproof", "mafia", "godfather", "silencer", "informer"};
+    informer Informer = new informer();
     Joker joker = new Joker();
     detective DETECTVIE = new detective();
     doctor Doctor = new doctor();
     bulletproof Bulletproof = new bulletproof();
     godfather Godfather = new godfather();
     silencer Silencer = new silencer();
-            // methodi ke baraye bazikoni ke naqsh nadarad naqsh moshakhas mikonad
+
+    // methodi ke baraye bazikoni ke naqsh nadarad naqsh moshakhas mikonad
     public void role_maker() {
         for (int i = 0; i < the_players.length; i++) {
             if (the_players[i].role == null) {
@@ -32,17 +35,22 @@ public class Game {
                         the_players[i].role = ROEL;
                     else System.out.println(ANSI_RED + "ROLE NOT FOUND");
                 }
+
                 if (the_players[i].role.equals("Joker")) {
                     joker.change_the_class(the_players[i]);
                     the_players[i].is_joker = true;
+                } else if (the_players[i].role.equals("informer")) {
+                    the_players[i].is_villager = true;
+                    the_players[i].is_informer = true;
+                    Informer.change_the_class(the_players[i]);
+
                 } else if (the_players[i].role.equals("detective")) {
                     the_players[i].is_villager = true;
                     DETECTVIE.change_the_class(the_players[i]);
                 } else if (the_players[i].role.equals("doctor")) {
                     the_players[i].is_villager = true;
                     Doctor.change_the_class(the_players[i]);
-                } else if (the_players[i].role.equals("bulletproof"))
-                {
+                } else if (the_players[i].role.equals("bulletproof")) {
                     the_players[i].shield = true;
                     the_players[i].is_villager = true;
                     Bulletproof.change_the_class(the_players[i]);
@@ -114,6 +122,7 @@ public class Game {
         }
         return false;
     }
+
     /*methodi ke save tavasot doctor ra false mikonad baraye hame */
     public void reset_the_saved() {
         for (int i = 0; i < the_players.length; i++) {
@@ -196,12 +205,76 @@ public class Game {
     }
     /*methodi ke  moshakhas mikonad ke chand bazikon ba bishtarin raiy hast*/
 
+    public void informer_job() {
+        Random random = new Random();
+        int rand_numebr = random.nextInt(5);
+        switch (rand_numebr % 4) {
+            case (1):
+                mafia_name();
+                break;
+            case (2):
+                player_was_voted();
+                break;
+            case (3):
+                how_many_mafai();
+                break;
+            case (0):
+                jOKERName();
+                break;
+        }
+
+    }
+
+    public void player_was_voted() {
+        for (int i = 0; i < the_players.length; i++) {
+            if (the_players[i].tryied_to_kill) {
+                System.out.println(ANSI_YELLOW + the_players[i].name + " was voted to be killed");
+                break;
+            }
+
+        }
+    }
+
+    public void how_many_mafai() {
+        int mafias = 0;
+        for (int i = 0; i < the_players.length; i++) {
+            if (is_mafia(the_players[i].name) &&the_players[i].is_alive)
+                mafias++;
+        }
+
+        System.out.println(ANSI_YELLOW + "Number of alive mafia : " + mafias);
+
+    }
+
+
+    public void jOKERName() {
+        if (joker.name != null)
+            System.out.println(ANSI_RED + "There is a joker who’s name starts with " + joker.name);
+
+    }
+
+
+    public void mafia_name() {
+        for (int i = 0; i < the_players.length; i++) {
+            if (the_players[i].is_alive)
+                if (!the_players[i].is_joker && !the_players[i].is_villager) {
+
+                    System.out.println(ANSI_YELLOW + "There is a mafia who’s name starts with " + the_players[i].name.charAt(0));
+                    break;
+                }
+        }
+    }
+
 
     public int how_many_max() {
         int maxes = 0;
         for (int i = 0; i < the_players.length; i++)
             if (the_players[find_the_max()].voting_numbers == the_players[i].voting_numbers)
                 maxes++;
+        for (int i = 0; i < the_players.length; i++)
+            if (the_players[find_the_max()].voting_numbers > the_players[i].voting_numbers && the_players[i].voting_numbers != 0)
+                the_players[i].tryied_to_kill = true;
+
         return maxes;
 
     }
@@ -258,7 +331,7 @@ public class Game {
                     } else {
                         is_done = true;
                         System.out.println(ANSI_RED + "DETECTIVE IS DEAD");
-                        DETECTVIE.is_alive=false;
+                        DETECTVIE.is_alive = false;
                     }
                 } else {
                     System.out.println(ANSI_RED + "USER CAN NOT WAKE UP DURING NIGHT,ENTER THE DETECTIVE NAME");
@@ -285,6 +358,9 @@ public class Game {
     /*methodi ke  moshakhas mikonad ke aya player naqsh khasi darad*/
 
     public void the_player_voote_has_special_role(Player player) {
+
+        if (player.name.equals(Informer.name))
+            Informer.is_alive = false;
         if (player.name.equals(DETECTVIE.name))
             DETECTVIE.is_alive = false;
         if (player.name.equals(Doctor.name))
@@ -302,7 +378,7 @@ public class Game {
             while (!is_done) {
                 if (Doctor.name.equals(name1)) {
                     if (Doctor.is_alive) {
-                        if (has_that_name(name2) && Is_Votee_alive(name2)&&Is_Votee_alive(name1)) {
+                        if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name1)) {
                             find_the_doctor_chosed(name2);
                             is_done = true;
                         } else if (!has_that_name(name2)) {
@@ -314,13 +390,13 @@ public class Game {
                         }
 
 
-                        }   else if(!Is_Votee_alive(name1))
-                            System.out.println(ANSI_RED +name1+ "  IS DEAD,ENTER ANOTHER NAME");
+                    } else if (!Is_Votee_alive(name1))
+                        System.out.println(ANSI_RED + name1 + "  IS DEAD,ENTER ANOTHER NAME");
 
                     else {
                         System.out.println(ANSI_RED + "DOCTOR IS DEAD");
                         is_done = true;
-                        Doctor.is_alive=false;
+                        Doctor.is_alive = false;
                     }
 
                 } else {
@@ -360,7 +436,7 @@ public class Game {
         return false;
     }
 
-            // methodi ke esm bazikone silence ra barmigardanad
+    // methodi ke esm bazikone silence ra barmigardanad
     public String return_silenced() {
         String name = "";
         for (int i = 0; i < the_players.length; i++) {
@@ -394,8 +470,7 @@ public class Game {
                                 Silencer.job_done = true;
                                 is_done = true;
                                 silenced(name2);
-                            }
-                            else if (!Is_Votee_alive(name2)) {
+                            } else if (!Is_Votee_alive(name2)) {
                                 System.out.println(ANSI_RED + "VOTEE IS DEAD,ENTER ANOTHER NAME");
                                 name2 = getter.next();
                             }
@@ -406,17 +481,18 @@ public class Game {
                     } else {
                         System.out.println(ANSI_RED + "SILENCER IS DEAD");
                         Silencer.job_done = true;
-                        Silencer.is_alive=false;
+                        Silencer.is_alive = false;
                         is_done = true;
                     }
-                }
-                else{System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE SILENCER NAME");
+                } else {
+                    System.out.println(ANSI_RED + "USER NOT FOUND,ENTER THE SILENCER NAME");
                     name = getter.next();
                 }
 
             }
         } else System.out.println(ANSI_RED + "SILENCER NOT FOUND");
     }
+
     // methodi ke moshakhas mikonad ke aya bazikon mafia ast ya na~!?
     public boolean is_mafia(String name) {
         for (int i = 0; i < the_players.length; i++) {
@@ -438,8 +514,8 @@ public class Game {
         char ORDER = 'c';
         while (ORDER != 'X') {
             ORDER = getter.next().charAt(0);
-            if (ORDER == 'V'){
-                System.out.println(ANSI_YELLOW+"ENTER THE VOTEE PLAYER NAME");
+            if (ORDER == 'V') {
+                System.out.println(ANSI_YELLOW + "ENTER THE VOTEE PLAYER NAME");
                 name2 = getter.next();
             }
         }
@@ -453,25 +529,19 @@ public class Game {
         if (has_that_name(name)) {
             if (is_mafia(name)) {
 
-                if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name))
-                {
+                if (has_that_name(name2) && Is_Votee_alive(name2) && Is_Votee_alive(name)) {
                     success_elected = true;
                     increase_the_votee(name2);
-                }
-                else if (!has_that_name(name2))
-                {
+                } else if (!has_that_name(name2)) {
                     System.out.println(ANSI_RED + "USER NOT FOUND ,ENTER THE VOTEE NAME AGAIN ");
 
-                } else if (!Is_Votee_alive(name2))
-                {
+                } else if (!Is_Votee_alive(name2)) {
                     System.out.println(ANSI_RED + "THE VOTEE IS ALREDY DEAD");
 
-                } else if (!Is_Votee_alive(name))
-                {
+                } else if (!Is_Votee_alive(name)) {
                     System.out.println(ANSI_RED + name + " IS ALREDY DEAD");
                 }
-            }
-            else {
+            } else {
                 System.out.println(ANSI_RED + "THE PLAYER CANT WAKE ");
 
             }
@@ -487,19 +557,21 @@ public class Game {
                 if (the_players[i].name.equals(name)) {
                     the_players[i].role = role;
                     the_players[i].is_alive = true;
-                    //{"Joker", "villager", "detective", "doctor", "bulletproof", "mafia","godfather","silencer"};
-                    //
+
                     if (role.equals("Joker")) {
                         joker.change_the_class(the_players[i]);
                         the_players[i].is_joker = true;
+                    } else if (the_players[i].role.equals("informer")) {
+                        the_players[i].is_villager = true;
+                        the_players[i].is_informer = true;
+                        Informer.change_the_class(the_players[i]);
                     } else if (role.equals("detective")) {
                         the_players[i].is_villager = true;
                         DETECTVIE.change_the_class(the_players[i]);
                     } else if (role.equals("doctor")) {
                         the_players[i].is_villager = true;
                         Doctor.change_the_class(the_players[i]);
-                    } else if (role.equals("bulletproof"))
-                    {
+                    } else if (role.equals("bulletproof")) {
                         the_players[i].shield = true;
                         the_players[i].is_villager = true;
                         Bulletproof.change_the_class(the_players[i]);

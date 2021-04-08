@@ -9,6 +9,9 @@ public  class Player {
     boolean is_suspect;
     boolean saved_by_doctor=false;
     boolean shield;
+    boolean is_informer;
+    boolean tryied_to_kill;
+
 
     public Player(){}
 
